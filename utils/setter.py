@@ -13,7 +13,7 @@ def decrypt(encrypted_data, key, iv):
 
 if __name__ == "__main__":
 
-    encryption_key_hex_acces_id = os.getenv('ENCRYPTION_KEY_HEX_ACCES_ID')
+    encryption_key_hex_acces_id = os.getenv('ENCRYPTION_KEY_ACCES_ID')
     iv_acces_id = os.getenv('IV_ACCES_ID')
     encrypted_aws_access_key_id = os.getenv('CIPHERTEXT_ACCES_ID')
 
