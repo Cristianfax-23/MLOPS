@@ -27,5 +27,5 @@ if __name__ == "__main__":
     with open('aws_access_key_id.txt', 'w') as f:
         f.write(aws_access_key_id)
 
-    with open('aws_access_key_id.txt', 'w') as f:
+    with open('aws_secret_key_id.txt', 'w') as f:
         f.write(aws_secret_id)
