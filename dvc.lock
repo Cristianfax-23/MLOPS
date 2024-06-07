@@ -12,5 +12,5 @@ stages:
     deps:
     - path: data/Dry_Bean.csv
       hash: md5
-      md5: 25a6f593d458d34a1f20ba6a02baef66
-      size: 664680
+      md5: 855fb60c70627c7c75b7b6d56aff99e0
+      size: 2484758
