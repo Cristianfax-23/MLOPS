@@ -42,11 +42,11 @@ jobs:
           IV_SECRET: ${{ secrets.IV_SECRET }}
           CIPHERTEXT_SECRET: ${{ secrets.CIPHERTEXT_SECRET }}
         run: |
-          echo "ENCRYPTION_KEY_ACCES_ID: $ENCRYPTION_KEY_ACCES_ID"
-          echo "IV_ACCES_ID: $IV_ACCES_ID"
-          echo "CIPHERTEXT_ACCES_ID: $CIPHERTEXT_ACCES_ID"
-          echo "ENCRYPTION_KEY_HEX_SECRET: $ENCRYPTION_KEY_HEX_SECRET"
-          echo "IV_SECRET: $IV_SECRET"
+          export ENCRYPTION_KEY_ACCES_ID=$ENCRYPTION_KEY_ACCES_ID
+          export IV_ACCES_ID=$IV_ACCES_ID
+          export CIPHERTEXT_ACCES_ID=$CIPHERTEXT_ACCES_ID
+          export ENCRYPTION_KEY_HEX_SECRET=$ENCRYPTION_KEY_HEX_SECRET
+          export IV_SECRET=$IV_SECRET
           python -m pip install --upgrade pip
           python -m venv env
           source env/bin/activate
