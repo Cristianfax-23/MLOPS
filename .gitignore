@@ -8,3 +8,4 @@ report.txt
 *.ipynb
 __pycache__
 .pytest_cache
+.dvc
