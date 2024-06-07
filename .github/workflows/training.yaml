@@ -42,6 +42,12 @@ jobs:
           IV_SECRET: ${{ secrets.IV_SECRET }}
           CIPHERTEXT_SECRET: ${{ secrets.CIPHERTEXT_SECRET }}
         run: |
+          export ENCRYPTION_KEY_ACCES_ID=$ENCRYPTION_KEY_ACCES_ID
+          export IV_ACCES_ID=$IV_ACCES_ID
+          export CIPHERTEXT_ACCES_ID=$CIPHERTEXT_ACCES_ID
+          export ENCRYPTION_KEY_HEX_SECRET=$ENCRYPTION_KEY_HEX_SECRET
+          export IV_SECRET=$IV_SECRET
+          export CIPHERTEXT_SECRET=$CIPHERTEXT_SECRET
           python -m pip install --upgrade pip
           python -m venv env
           source env/bin/activate
@@ -57,8 +63,8 @@ jobs:
           python -m venv env
           source env/bin/activate
           pip install -r requirements.txt
-          export AWS_SECRET_ID=$(AWS_SECRET_ID)
-          export AWS_ACCES_ID=$(AWS_ACCES_ID)
+          export AWS_SECRET_ID=$AWS_SECRET_ID
+          export AWS_ACCES_ID=$AWS_ACCES_ID
           dvc pull models/model.pkl -r aws-bucket-model
           dvc unprotect models/model.pkl.dvc
           dvc repro -f
