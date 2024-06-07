@@ -1,0 +1,6 @@
+[core]
+    remote = aws-bucket-data
+['remote "aws-bucket-model"']
+    url = s3://my-bucket-s3-cristian/models/
+['remote "aws-bucket-data"']
+    url = s3://my-bucket-s3-cristian/data/

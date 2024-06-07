@@ -1,0 +1,10 @@
+env/
+*.png
+report.txt
+*.json
+*.pkl
+*.csv
+/notebooks
+*.ipynb
+__pycache__
+.pytest_cache

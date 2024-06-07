@@ -1,0 +1,11 @@
+stages:
+  prepare:
+    cmd: python src/preparing.py
+    deps:
+    - src/preparing.py
+
+  training:
+    cmd: python src/trainig.py
+    deps:
+    - data/Dry_Bean.csv
+
