@@ -33,28 +33,47 @@ jobs:
           python-version: '3.x'
 
       - name: Decrypt secrets acces id and secret
-      
         env:
-          ENCRYPTION_KEY_ACCES_ID: ${{ secrets.ENCRYPTION_KEY_ACCES_ID }}
+          ENCRYPTION_KEY_HEX_ACCES_ID: ${{ secrets.ENCRYPTION_KEY_HEX_ACCES_ID }}
           IV_ACCES_ID: ${{ secrets.IV_ACCES_ID }}
           CIPHERTEXT_ACCES_ID: ${{ secrets.CIPHERTEXT_ACCES_ID }}
           ENCRYPTION_KEY_HEX_SECRET: ${{ secrets.ENCRYPTION_KEY_HEX_SECRET }}
           IV_SECRET: ${{ secrets.IV_SECRET }}
           CIPHERTEXT_SECRET: ${{ secrets.CIPHERTEXT_SECRET }}
         run: |
-          export ENCRYPTION_KEY_ACCES_ID=$ENCRYPTION_KEY_ACCES_ID
-          export IV_ACCES_ID=$IV_ACCES_ID
-          export CIPHERTEXT_ACCES_ID=$CIPHERTEXT_ACCES_ID
-          export ENCRYPTION_KEY_HEX_SECRET=$ENCRYPTION_KEY_HEX_SECRET
-          export IV_SECRET=$IV_SECRET
           python -m pip install --upgrade pip
           python -m venv env
           source env/bin/activate
           pip install pycryptodome
           python utils/setter.py
+
+      - name: Configure DVC
+        env:
+          AWS_ACCESS_KEY_ID: $(cat aws_access_key_id.txt)
+          AWS_SECRET_ACCESS_KEY: $(cat aws_secret_key_id.txt)
+        run: |
+          echo "[core]" > .dvc/config
+          echo "    remote = aws-bucket-model" >> .dvc/config
+          echo "" >> .dvc/config
+          echo '[remote "aws-bucket-data"]' >> .dvc/config
+          echo "    url = s3://my-bucket-s3-cristian/data" >> .dvc/config
+          echo "" >> .dvc/config
+          echo '[remote "aws-bucket-model"]' >> .dvc/config
+          echo "    url = s3://my-bucket-s3-cristian/models" >> .dvc/config
+          echo "    access_key_id = ${AWS_ACCESS_KEY_ID}" >> .dvc/config
+          echo "    secret_access_key = ${AWS_SECRET_ACCESS_KEY}" >> .dvc/config
+
+      - name: Train model
+        env:
+          AWS_SECRET_ID: $(cat aws_access_key_id.txt)
+          AWS_ACCES_ID: $(cat aws_access_key_id.txt)
+        run: |
+          python -m pip install --upgrade pip
+          python -m venv env
+          source env/bin/activate
           pip install -r requirements.txt
-          export AWS_SECRET_ID=$(cat aws_secret_key_id.txt)
-          export AWS_ACCES_ID=$(cat aws_access_key_id.txt)
+          export AWS_SECRET_ID=$AWS_SECRET_ID
+          export AWS_ACCES_ID=$AWS_ACCES_ID
           dvc pull models/model.pkl -r aws-bucket-model
           dvc unprotect models/model.pkl.dvc
           dvc repro -f
@@ -64,8 +83,8 @@ jobs:
 
       - name: Clean up
         run: |
-          rm -f decrypted_secret.txt
-          rm-f decrypted_acces_id.txt
+          rm -f aws_access_key_id.txt
+          rm -f decrypted_acces_id.txt
 
       - name: Commit .dvc file changes
         run: |
