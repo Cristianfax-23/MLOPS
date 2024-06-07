@@ -53,7 +53,6 @@ jobs:
           AWS_SECRET_ID: $(cat decrypted_secret.txt)
           AWS_ACCES_ID: $(cat decrypted_acces_id.txt)
         run: |
-          cd ${{ github.workspace }}
           python -m pip install --upgrade pip
           python -m venv env
           source env/bin/activate
