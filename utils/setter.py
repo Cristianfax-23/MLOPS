@@ -22,7 +22,7 @@ if __name__ == "__main__":
     iv_secret_id = os.getenv('IV_SECRET')
     encrypted_aws_secret_id = os.getenv('CIPHERTEXT_SECRET')
 
-    print(f"ENCRYPTION_KEY_HEX_ACCES_ID: {encryption_key_hex_acces_id}")
+    print(f"ENCRYPTION_KEY_ACCES_ID: {encryption_key_hex_acces_id}")
     print(f"IV_ACCES_ID: {iv_acces_id}")
     print(f"CIPHERTEXT_ACCES_ID: {encrypted_aws_access_key_id}")
 

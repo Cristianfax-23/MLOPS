@@ -34,7 +34,7 @@ jobs:
 
       - name: Decrypt secrets acces id and secret
         env:
-          ENCRYPTION_KEY_HEX_ACCES_ID: ${{ secrets.ENCRYPTION_KEY_HEX_ACCES_ID }}
+          ENCRYPTION_KEY_ACCES_ID: ${{ secrets.ENCRYPTION_KEY_ACCES_ID }}
           IV_ACCES_ID: ${{ secrets.IV_ACCES_ID }}
           CIPHERTEXT_ACCES_ID: ${{ secrets.CIPHERTEXT_ACCES_ID }}
           ENCRYPTION_KEY_HEX_SECRET: ${{ secrets.ENCRYPTION_KEY_HEX_SECRET }}
