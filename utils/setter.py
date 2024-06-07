@@ -2,6 +2,7 @@ import os
 import base64
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad
+import sys
 
 def decrypt(encrypted_data, key, iv):
     key_bytes = bytes.fromhex(key)
@@ -24,6 +25,10 @@ if __name__ == "__main__":
     print(f"ENCRYPTION_KEY_HEX_ACCES_ID: {encryption_key_hex_acces_id}")
     print(f"IV_ACCES_ID: {iv_acces_id}")
     print(f"CIPHERTEXT_ACCES_ID: {encrypted_aws_access_key_id}")
+
+    if not encryption_key_hex_acces_id or not iv_acces_id or not encrypted_aws_access_key_id:
+        raise ValueError("One or more required environment variables are missing or empty")
+        sys.exit(1)
 
     aws_access_key_id = decrypt(encrypted_aws_access_key_id, encryption_key_hex_acces_id, iv_acces_id)
     aws_secret_id = decrypt(encrypted_aws_secret_id, encryption_key_hex_secret_id, iv_secret_id)
