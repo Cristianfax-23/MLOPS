@@ -42,7 +42,7 @@ jobs:
           IV_SECRET: ${{ secrets.IV_SECRET }}
           CIPHERTEXT_SECRET: ${{ secrets.CIPHERTEXT_SECRET }}
         run: |
-          print(ENCRYPTION_KEY_ACCES_ID)
+          echo $ENCRYPTION_KEY_ACCES_ID
           python -m pip install --upgrade pip
           python -m venv env
           source env/bin/activate
