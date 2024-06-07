@@ -50,8 +50,8 @@ jobs:
 
       - name: Train model
         env:
-          AWS_SECRET_ID: $(cat decrypted_secret.txt)
-          AWS_ACCES_ID: $(cat decrypted_acces_id.txt)
+          AWS_SECRET_ID: $(cat aws_access_key_id.txt)
+          AWS_ACCES_ID: $(cat aws_access_key_id.txt)
         run: |
           python -m pip install --upgrade pip
           python -m venv env
