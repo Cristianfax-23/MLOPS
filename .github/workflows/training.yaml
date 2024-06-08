@@ -56,10 +56,10 @@ jobs:
           pip install -r requirements.txt
           echo "Asignando las variables"
           export AWS_SECRET_ACCESS_KEY=$(cat aws_secret_key_id.txt)
+          echo $AWS_SECRET_ACCESS_KEY
           export AWS_ACCES_KEY_ID=$(cat aws_access_key_id.txt)
+          echo $AWS_ACCES_KEY_ID
           echo "trayendo el modelo"
-          dvc pull models/model.pkl -r aws-bucket-model
-          dvc unprotect models/model.pkl.dvc
           dvc repro -f
           echo 'Training Completed'
           dvc add models/model.pkl --to-remote -r models_track 
