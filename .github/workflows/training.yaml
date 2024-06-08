@@ -32,8 +32,7 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Decrypt secrets acces id and secret
-
+      - name: Decrypt secrets access id and secret
         env:
           ENCRYPTION_KEY_ACCES_ID: ${{ secrets.ENCRYPTION_KEY_ACCES_ID }}
           IV_ACCES_ID: ${{ secrets.IV_ACCES_ID }}
@@ -49,58 +48,58 @@ jobs:
           python utils/setter.py
 
       - name: Install AWS CLI
-          run: |
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
 
       - name: Configure AWS credentials
-          run: |
-            aws configure set aws_access_key_id $(cat aws_access_key_id.txt)
-            aws configure set aws_secret_access_key $(cat aws_secret_key_id.txt)
-            aws configure set default.region
+        run: |
+          aws configure set aws_access_key_id $(cat aws_access_key_id.txt)
+          aws configure set aws_secret_access_key $(cat aws_secret_key_id.txt)
+          aws configure set default.region
 
       - name: Train model
-          run: |
-            python -m pip install --upgrade pip
-            python -m venv env
-            echo "Activando ambiente ..."
-            source env/bin/activate
-            pip install -r requirements.txt
-            echo "Asignando las variables"
-            export AWS_SECRET_ACCESS_KEY=$(cat aws_secret_key_id.txt)
-            export AWS_ACCES_KEY_ID=$(cat aws_access_key_id.txt)
-            echo "trayendo el modelo"
-            dvc repro -f
-            echo 'Training Completed'
-            dvc add models/model.pkl --to-remote -r models_track 
-            dvc push models/model.pkl -r models_track
+        run: |
+          python -m pip install --upgrade pip
+          python -m venv env
+          echo "Activando ambiente ..."
+          source env/bin/activate
+          pip install -r requirements.txt
+          echo "Asignando las variables"
+          export AWS_SECRET_ACCESS_KEY=$(cat aws_secret_key_id.txt)
+          export AWS_ACCESS_KEY_ID=$(cat aws_access_key_id.txt)
+          echo "trayendo el modelo"
+          dvc repro -f
+          echo 'Training Completed'
+          dvc add models/model.pkl --to-remote -r models_track 
+          dvc push models/model.pkl -r models_track
 
       - name: Clean up
-          run: |
-            rm -f aws_access_key_id.txt
-            rm -f decrypted_acces_id.txt
+        run: |
+          rm -f aws_access_key_id.txt
+          rm -f decrypted_access_id.txt
 
       - name: Commit .dvc file changes
-          run: |
-            git config --local user.email "thegameprox777.13@gmail.com"
-            git config --local user.name "github-actions[bot]"
-            git add models/model.pkl.dvc
-            git commit -m "Updating model serialization"
+        run: |
+          git config --local user.email "thegameprox777.13@gmail.com"
+          git config --local user.name "github-actions[bot]"
+          git add models/model.pkl.dvc
+          git commit -m "Updating model serialization"
 
       - uses: ad-m/github-push-action@master
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            branch: ${{ github.ref }}
-            force: true
-          env:
-            DEBUG: true
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: true
+        env:
+          DEBUG: true
 
       - uses: iterative/setup-cml@v1
 
       - name: Push metrics
-          env:
-            REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run: |
-            cat report.txt >> report.md
-            cml comment create report.md
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat report.txt >> report.md
+          cml comment create report.md
