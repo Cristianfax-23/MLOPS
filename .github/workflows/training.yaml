@@ -52,6 +52,7 @@ jobs:
           AWS_SECRET_ID: $(cat aws_secret_key_id.txt)
           AWS_ACCES_ID: $(cat aws_access_key_id.txt)
         run: |
+          ls
           python -m pip install --upgrade pip
           python -m venv env
           source env/bin/activate
