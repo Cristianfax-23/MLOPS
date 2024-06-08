@@ -24,7 +24,7 @@ try:
 
     logger.info('Connection with the s3 bucket ...')
 
-    path_data = api.get_url( path= './data/Dry_Bean.csv' , remote= 'aws-bucket-data')
+    path_data = api.get_url( path= 'data/Dry_Bean.csv' , remote= 'aws-bucket-data')
 
     data = pd.read_csv(path_data)
     logger.info('Data read successfully ...')
