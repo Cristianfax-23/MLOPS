@@ -7,3 +7,5 @@ report.txt
 __pycache__
 .pytest_cache
 .dvc
+.pkl
+.csv
