@@ -8,7 +8,7 @@ permissions:
 on:
   push:
     branches:
-      -  workflows_continuos_training
+      - workflows_continuos_training
   schedule:
     - cron: '0 */6 * * *'
   workflow_dispatch:
@@ -25,46 +25,20 @@ jobs:
         uses: actions/checkout@v3
     
       - name: Decrypt Credentials
-          env:
-
-            CIPHERTEXT_ACCES_ID : ${{ secrets.CIPHERTEXT_ACCES_ID }}
-            CIPHERTEXT_SECRET : ${{ secrets.CIPHERTEXT_SECRET }}
-            ENCRYPTION_KEY_ACCES_ID : ${{ secrets.ENCRYPTION_KEY_ACCES_ID }}
-            ENCRYPTION_KEY_HEX_SECRET : ${{ secrets.ENCRYPTION_KEY_HEX_SECRET }}
-            IV_ACCES_ID : ${{ secrets.IV_ACCES_ID }}
-            IV_SECRET : ${{ secrets.IV_SECRET }}
-
-          run: |
-            python -m venv env
-            source env/bin/activate
-            pip install -r requirements.txt
-            export AWS_ACCES_KEY_ID=$(python utils/setter.py)
-            export AWS_SECRET_ACCES_KEY=$(python utils/setter.py)
-            dvc pull data/Dry_Bean.csv
-            mv Dry_Bean.csv ./data/
-            dvc repro -f
-            echo 'Training Completed'
-            dvc add model/model.pkl -r models_track --to-remote
-            dvc push model/model.pkl -r models_track 
-
-      - name: Commit .dvc file changes
-          run: |
-            git config --local user.email "thegameprox777.13@gmail.com"
-            git config --local user.name "github-actions[bot]"
-            git add model/model.pkl.dvc
-            git commit -m " Updating model serialization"
-      - uses: ad-m/github-push-action@master
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            branch: ${{ github.ref }}
-            force: true
-          env:
-            DEBUG: true
-      - uses: iterative/setup-cml@v1
-      - name: Push metrics
         env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CIPHERTEXT_ACCES_ID: ${{ secrets.CIPHERTEXT_ACCES_ID }}
+          CIPHERTEXT_SECRET: ${{ secrets.CIPHERTEXT_SECRET }}
+          ENCRYPTION_KEY_ACCES_ID: ${{ secrets.ENCRYPTION_KEY_ACCES_ID }}
+          ENCRYPTION_KEY_HEX_SECRET: ${{ secrets.ENCRYPTION_KEY_HEX_SECRET }}
+          IV_ACCES_ID: ${{ secrets.IV_ACCES_ID }}
+          IV_SECRET: ${{ secrets.IV_SECRET }}
         run: |
-          cat report.txt >> report.md
-          cml comment create report.md
-
+          python -m venv env
+          source env/bin/activate
+          pip install -r requirements.txt
+          export AWS_ACCESS_KEY_ID=$(python utils/setter.py)
+          export AWS_SECRET_ACCESS_KEY=$(python utils/setter.py)
+          dvc pull data/Dry_Bean.csv
+          mv data/Dry_Bean.csv ./data/
+          dvc repro -f
+          echo '
