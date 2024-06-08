@@ -62,8 +62,6 @@ jobs:
           dvc repro -f
           echo 'Training Completed'
           dvc add models/model.pkl --to-remote -r aws-bucket-model
-          git add .
-          git commit -m "Update model"
           dvc push 
 
       - name: Clean up
@@ -75,8 +73,8 @@ jobs:
         run: |
           git config --local user.email "thegameprox777.13@gmail.com"
           git config --local user.name "github-actions[bot]"
-          git add models/model.pkl.dvc
-          git commit -m "Updating model serialization"
+          git add .
+          git commit -m "Updating model"
 
       - uses: ad-m/github-push-action@master
         with:
