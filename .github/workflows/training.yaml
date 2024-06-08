@@ -63,6 +63,7 @@ jobs:
           echo 'Training Completed'
           dvc add models/model.pkl --to-remote -r aws-bucket-model
           git add .
+          git commit -m "Update model"
           dvc push 
 
       - name: Clean up
