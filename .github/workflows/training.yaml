@@ -56,20 +56,18 @@ jobs:
           echo "Asignando las variables"
           export AWS_SECRET_ACCESS_KEY=$(cat aws_secret_key_id.txt)
           export AWS_ACCESS_KEY_ID=$(cat aws_access_key_id.txt)
-          echo $AWS_ACCESS_KEY_ID
-          echo $AWS_SECRET_ACCESS_KEY
           echo "Trayendo el modelo"
           dvc pull models/model.pkl -r aws-bucket-model
           dvc unprotect models/model.pkl.dvc
           dvc repro -f
           echo 'Training Completed'
-          dvc add models/model.pkl --to-remote -r models_track 
-          dvc push models/model.pkl -r models_track
+          dvc add models/model.pkl --to-remote -r aws-bucket-model 
+          dvc push 
 
       - name: Clean up
         run: |
+          rm -f aws_secret_key_id.txt
           rm -f aws_access_key_id.txt
-          rm -f decrypted_acces_id.txt
 
       - name: Commit .dvc file changes
         run: |
