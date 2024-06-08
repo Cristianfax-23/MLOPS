@@ -51,10 +51,13 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m venv env
+          echo "Activando ambiente ..."
           source env/bin/activate
           pip install -r requirements.txt
+          echo "Asignando las variables"
           export AWS_SECRET_ACCESS_KEY=$(cat aws_secret_key_id.txt)
           export AWS_ACCES_KEY_ID=$(cat aws_access_key_id.txt)
+          echo "trayendo el modelo"
           dvc pull models/model.pkl -r aws-bucket-model
           dvc unprotect models/model.pkl.dvc
           dvc repro -f
